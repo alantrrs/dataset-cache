@@ -6,3 +6,6 @@ The idea is that using a dataset should be as simple as requiring it into your p
 ## Install
 The first step is getting the resources. These resources are usually compressed, so the second 
 step is decompressing them into the proper file structure.
+
+## Rules
+1. A whole dataset will be downloaded and extracted into a single directory

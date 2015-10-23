@@ -4,14 +4,19 @@
   "description": "A common API for your data",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint",
+    "test": "npm run lint && mocha test/index.js",
     "lint": "standard"
   },
   "author": "alantrrs",
   "license": "MIT",
   "dependencies": {
     "fetch-node": "0.0.1",
+    "md5": "^2.0.0",
+    "mkdirp": "^0.5.1",
     "mz": "^2.1.0",
     "standard": "^5.3.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.3"
   }
 }
