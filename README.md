@@ -1,7 +1,9 @@
 # Dataset.js
-This library provides a solution for downloading and caching datasets.
+_A solution for downloading and caching datasets_
 
-Dataset.js allows you to download your datasets only once and 
+----
+
+Dataset.js allows you to download your datasets, cache them and 
 guarantee that the data you're using is the correct one.
 
 ## Use
