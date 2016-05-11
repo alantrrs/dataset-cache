@@ -9,7 +9,7 @@ guarantee that the data you're using is the correct one.
 ## Use
 ### Download and cache a single file
 Library:
-```
+```js
 dataset.get('http://example.com/my-file.txt', '/output_dir').then(function (data) {
   console.log(data.path) // /output_dir/23424343434342343.txt
   console.log(data.hash) // 23123123214242424
@@ -22,8 +22,8 @@ $ dataset get http://example.com/my-file.txt -o /my_data
 > 232352523523 /my_data/24234234235235.txt
 ```
 
-### Download, uncompress and cache a directory (tar.gz, zip)
-```
+### Download, uncompress and cache a directory (tar.gz)
+```js
 dataset.get('http://example.com/my-files.tar.gz', output_dir).then(function (data) {
   console.log(data.path) // /output_dir/23424343434342343
   console.log(data.hash) // 23123123214242424
