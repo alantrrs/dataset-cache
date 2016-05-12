@@ -8,5 +8,8 @@ test:
   image: node
   entrypoint: npm test
   working_dir: /home/app
+  environment:
+    - DEBUG=$DEBUG
   volumes:
     - .:/home/app
+    - /tmp:/tmp
