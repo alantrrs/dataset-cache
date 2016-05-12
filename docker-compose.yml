@@ -1,0 +1,12 @@
+npm:
+  image: node
+  entrypoint: npm
+  working_dir: /home/app
+  volumes:
+    - .:/home/app
+test:
+  image: node
+  entrypoint: npm test
+  working_dir: /home/app
+  volumes:
+    - .:/home/app
