@@ -29,30 +29,24 @@ function validateCache (data_dir, source_hash) {
   })
 }
 
-function get (source, data_dir) {
+function getFile (source, data_dir) {
   // Check if the data exists and is valid
   return validateCache(data_dir, source.hash).then(function (data) {
     if (data.cached) return data
     // Download
     return download(source.url, data_dir)
-    // Get checksum
+    // Get checksum & verify against source hash
     .then(function (file) {
       return hashFile(file).then(function (hash) {
         return {
+          cached: false,
           path: file,
-          hash: hash
+          hash: hash,
+          valid: hash === source.hash
         }
       })
     })
-    // Verify against original hash
-    .then(function (newFile) {
-      newFile.valid = false
-      if (newFile.hash === source.hash) {
-        newFile.valid = true
-      }
-      return newFile
-    })
-    // Move file to final data_dir
+    // Rename using hash
     .then(function (newFile) {
       const new_path = path.join(data_dir, newFile.hash)
       fs.renameSync(newFile.path, new_path)
@@ -60,6 +54,19 @@ function get (source, data_dir) {
       return newFile
     })
   })
+}
+
+function getDir (source, data_dir) {
+  // TODO: Check if data exist and is valid
+  // TODO: Download compressed file
+  // TODO: Uncompress file
+  // TODO: Get dir checksum & validate against source hash
+  // TODO: Rename directory using hash
+}
+
+function get (source, data_dir) {
+  if (source.url.indexOf('.tar.gz') === -1) return getFile(source, data_dir)
+  return getDir(source, data_dir)
 }
 
 function hashFile (file) {
