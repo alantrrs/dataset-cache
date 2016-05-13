@@ -4,6 +4,15 @@ npm:
   working_dir: /home/app
   volumes:
     - .:/home/app
+dataset:
+  image: node
+  entrypoint: node cli.js
+  working_dir: /home/app
+  environment:
+    - DEBUG=$DEBUG
+  volumes:
+    - .:/home/app
+    - /tmp:/tmp
 test:
   image: node
   entrypoint: npm test

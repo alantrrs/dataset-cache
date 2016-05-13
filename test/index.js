@@ -59,7 +59,7 @@ var test_dirs = {
   resources: [
     {
       url: 'https://github.com/alanhoff/node-tar.gz/raw/master/test/fixtures/compressed.tar.gz',
-      hash: '18b98c4440560b5d343a9273f1b8043cd690761754209facf4839f7efec82b6f'
+      hash: 'd92e005936555d9bf77d62d94d3cf6932a38f6257d482c97fab8c6d6f3d61cc0'
     }
   ]
 }
@@ -69,7 +69,6 @@ describe('Install tarballs', function () {
     this.timeout(30000)
     dataset.install(test_dirs).then(function (dirs) {
       dirs.forEach(function (dir, i) {
-        console.log(dir)
         assert(fs.lstatSync(dir.path).isDirectory())
         if (dir.valid) {
           assert.equal(dir.hash, test_dirs.resources[i].hash)
@@ -80,19 +79,14 @@ describe('Install tarballs', function () {
       done()
     }).catch(done)
   })
-  it('should have cahed valid objects', function (done) {
+  it('should have cached valid objects', function (done) {
     this.timeout(30000)
     dataset.install(test_dirs).then(function (dirs) {
       dirs.forEach(function (dir, i) {
-        console.log(dir)
         assert(fs.lstatSync(dir.path).isDirectory())
-        if (dir.valid) {
-          assert.equal(dir.hash, test_dirs.resources[i].hash)
-          assert(dir.cached)
-        } else {
-          assert.notEqual(dir.hash, test_dirs.resources[i].hash)
-          assert.equal(dir.cached, false)
-        }
+        assert(dir.valid)
+        assert.equal(dir.hash, test_dirs.resources[i].hash)
+        assert(dir.cached)
       })
       done()
     }).catch(done)
