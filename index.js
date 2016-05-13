@@ -78,7 +78,6 @@ function tarCompress (dir_path) {
         if (header.type === 'file') header.mode = 33204
         header.gid = 1000
         header.uid = 1000
-        console.log(header)
         return header
       }
     }).pipe(out).on('finish', function () {
