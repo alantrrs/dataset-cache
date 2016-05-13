@@ -73,7 +73,11 @@ function tarCompress (dir_path) {
     var out = fs.createWriteStream(tmp_file)
     tar.pack(dir_path, {
       map: function (header) {
-        if (header.name === '.') header.mtime = new Date('2009', '04', '27')
+        if (header.name === '.') header.mtime = new Date(1240815600000)
+        if (header.type === 'directory') header.mode = 16893
+        if (header.type === 'file') header.mode = 33204
+        header.gid = 1000
+        header.uid = 1000
         console.log(header)
         return header
       }

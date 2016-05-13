@@ -59,7 +59,7 @@ var test_dirs = {
   resources: [
     {
       url: 'https://github.com/alanhoff/node-tar.gz/raw/master/test/fixtures/compressed.tar.gz',
-      hash: '68f7543f4f5d874ed603b79f9e18f7960535e653c1c0cdd8538aae90d7207464'
+      hash: 'c4ac860cf71f1f1ad053fe832f69dbfd15848e9797c21642fb1c79e14fd4f13b'
     }
   ]
 }
