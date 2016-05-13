@@ -72,7 +72,12 @@ function tarCompress (dir_path) {
   return new Promise (function (resolve, reject) {
     var tmp_file = '/tmp/' + shortid.generate()
     var out = fs.createWriteStream(tmp_file)
-    tar.pack(dir_path).pipe(out).on('finish', function () {
+    tar.pack(dir_path,{
+      map: function (header) {
+        header.mtime = new Date(2009, 04, 27)
+        return header
+      }
+    }).pipe(out).on('finish', function () {
       resolve(tmp_file)
     }).on('error', function (err) {
       reject(err)
