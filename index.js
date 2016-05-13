@@ -6,11 +6,10 @@ var path = require('path')
 var tar = require('tar-fs')
 var gz = require('gunzip-maybe')
 var debug = require('debug')('datasetjs')
-var mkdir = require('mkdirp')
 
 function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
-    debug('downloading '+ source)
+    debug('downloading ' + source)
     return fetch(source).then(function (response) {
       var outputPath = path.join(data_dir, source.split('/').pop() + shortid.generate() + '.tmp')
       var out = fs.createWriteStream(outputPath)
@@ -37,7 +36,7 @@ function getFile (source, data_dir) {
   const cache_path = path.join(data_dir, source.hash)
   return validateFile(cache_path, source.hash).then(function (data) {
     debug('Chached data valid: ' + data.valid)
-    if (data.valid){
+    if (data.valid) {
       data.cached = true
       return data
     }
@@ -45,7 +44,7 @@ function getFile (source, data_dir) {
     return download(source.url, data_dir)
     // Get checksum & verify against source hash
     .then(function (file_path) {
-       return validateFile(file_path, source.hash)
+      return validateFile(file_path, source.hash)
       // Rename using hash
       .then(function (newFile) {
         debug('newFile path' + newFile.path)
@@ -69,12 +68,13 @@ function uncompress (compressed_file, uncompressed_dir) {
 }
 
 function tarCompress (dir_path) {
-  return new Promise (function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var tmp_file = '/tmp/' + shortid.generate()
     var out = fs.createWriteStream(tmp_file)
-    tar.pack(dir_path,{
+    tar.pack(dir_path, {
       map: function (header) {
-        header.mtime = new Date(2009, 04, 27)
+        if (header.name === '.') header.mtime = new Date('2009', '04', '27')
+        console.log(header)
         return header
       }
     }).pipe(out).on('finish', function () {

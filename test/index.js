@@ -59,7 +59,7 @@ var test_dirs = {
   resources: [
     {
       url: 'https://github.com/alanhoff/node-tar.gz/raw/master/test/fixtures/compressed.tar.gz',
-      hash: 'eca23c4f37ef2cb61ac9f9f4051960008487a7afe9fb7fa4b8b1342c854e6e55'
+      hash: '68f7543f4f5d874ed603b79f9e18f7960535e653c1c0cdd8538aae90d7207464'
     }
   ]
 }
@@ -91,5 +91,4 @@ describe('Install tarballs', function () {
       done()
     }).catch(done)
   })
-
 })

@@ -21,4 +21,3 @@ test:
     - DEBUG=$DEBUG
   volumes:
     - .:/home/app
-    - /tmp:/tmp
