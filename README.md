@@ -1,4 +1,4 @@
-# Dataset.js
+# Dataset Cache
 _A solution for downloading and caching datasets_
 
 
