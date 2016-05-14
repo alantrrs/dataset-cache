@@ -1,18 +1,19 @@
 
 var dataset = require('.')
 
-console.log(process.argv)
+// TODO: hash files and directories
+// TODO: validate files and directories
 
 function execute (command) {
   switch (command) {
-    // TODO: Looks like the issue is in the extraction
     case 'extract':
       return dataset.extract(process.argv[3], process.argv[4]).then(function (data) {
         console.log(data)
       })
     case 'hash':
-      return dataset.hashDir(process.argv[3]).then(function (hash) {
-        console.log(hash)
+      return dataset.hash(process.argv[3]).then(function (hash) {
+        if (!hash) return console.log('No such file or directory')
+        console.log(`${process.argv[3]}\t${hash}`)
       })
     default:
       console.log('use: dataset command [args]')

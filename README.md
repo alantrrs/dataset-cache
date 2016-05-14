@@ -1,8 +1,8 @@
 # Dataset.js
 _A solution for downloading and caching datasets_
 
-----
 
+## Description
 Dataset.js allows you to download your datasets, cache them and 
 guarantee that the data you're using is the correct one.
 
