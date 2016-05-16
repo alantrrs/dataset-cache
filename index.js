@@ -113,7 +113,7 @@ function get (source, data_dir) {
  * @param {string} out_dir - destination directory
  */
 function install (config, out_dir) {
-  if (!out_dir) out_dir = '/tmp/'
+  if (!out_dir) return Promise.reject('No output directory provided')
   return Promise.all(config.resources.map(function (resource) {
     return get(resource, out_dir)
   }))

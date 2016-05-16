@@ -21,11 +21,12 @@ var test_data = {
     }
   ]
 }
+var tmpDir = '/tmp/'
 
 describe('Install files', function () {
   it('should download and cache the files', function (done) {
     this.timeout(30000)
-    dataset.install(test_data).then(function (files) {
+    dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
         if (file.valid) {
@@ -39,7 +40,7 @@ describe('Install files', function () {
   })
   it('should have cached valid objects', function (done) {
     this.timeout(30000)
-    dataset.install(test_data).then(function (files) {
+    dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
         if (file.valid) {
@@ -67,7 +68,7 @@ var test_dirs = {
 describe('Install tarballs', function () {
   it('should download and uncompress the file', function (done) {
     this.timeout(30000)
-    dataset.install(test_dirs).then(function (dirs) {
+    dataset.install(test_dirs, tmpDir).then(function (dirs) {
       dirs.forEach(function (dir, i) {
         assert(fs.lstatSync(dir.path).isDirectory())
         assert(dir.valid)
@@ -78,7 +79,7 @@ describe('Install tarballs', function () {
   })
   it('should have cached valid objects', function (done) {
     this.timeout(30000)
-    dataset.install(test_dirs).then(function (dirs) {
+    dataset.install(test_dirs, tmpDir).then(function (dirs) {
       dirs.forEach(function (dir, i) {
         assert(fs.lstatSync(dir.path).isDirectory())
         assert(dir.valid)
