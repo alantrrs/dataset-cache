@@ -59,7 +59,7 @@ var test_dirs = {
   resources: [
     {
       url: 'https://github.com/alanhoff/node-tar.gz/raw/master/test/fixtures/compressed.tar.gz',
-      hash: 'c4ac860cf71f1f1ad053fe832f69dbfd15848e9797c21642fb1c79e14fd4f13b'
+      hash: 'e47b1c61496925496f494a753ef50085dc8a9183763f78d52a451ec58fabdf2b'
     }
   ]
 }
@@ -70,11 +70,8 @@ describe('Install tarballs', function () {
     dataset.install(test_dirs).then(function (dirs) {
       dirs.forEach(function (dir, i) {
         assert(fs.lstatSync(dir.path).isDirectory())
-        if (dir.valid) {
-          assert.equal(dir.hash, test_dirs.resources[i].hash)
-        } else {
-          assert.notEqual(dir.hash, test_dirs.resources[i].hash)
-        }
+        assert(dir.valid)
+        assert.equal(dir.hash, test_dirs.resources[i].hash)
       })
       done()
     }).catch(done)
