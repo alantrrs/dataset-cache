@@ -5,7 +5,7 @@ var path = require('path')
 var tar = require('tar-fs')
 var gz = require('gunzip-maybe')
 var debug = require('debug')('dataset-cache')
-var hash = require('./hash')
+var hash = require('hash-then')
 
 function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
