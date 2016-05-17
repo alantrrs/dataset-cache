@@ -8,19 +8,20 @@ var dataset = require('..')
 var test_data = {
   resources: [
     {
-      url: 'https://raw.githubusercontent.com/alantrrs/py-faster-rcnn/master/README.md',
-      hash: '9f5e6899095e366f25a612e56d8b4ebd32c6914288991e3a8a48265c38e6b6cb'
+      url: 'https://raw.githubusercontent.com/empiricalci/fixtures/master/my-file.txt',
+      hash: '8b4781a921e9f1a1cb5aa3063ca8592cac3ee39276d8e8212b336b6e73999798'
     },
     {
-      url: 'https://raw.githubusercontent.com/alantrrs/py-faster-rcnn/master/Dockerfile',
-      hash: '370a909aff0388e235c54eba9b962bb973ba82ac2008fdf6e9277b14ee3394fb'
+      url: 'https://raw.githubusercontent.com/empiricalci/fixtures/master/another_file.txt',
+      hash: '986915f2caa2c8f9538f0b77832adc8abf3357681d4de5ee93a202ebf19bd8b8'
     },
     {
-      url: 'https://raw.githubusercontent.com/alantrrs/py-faster-rcnn/master/README.md',
+      url: 'https://raw.githubusercontent.com/empiricalci/fixtures/another_file.txt',
       hash: 'abcd6899095d366f25a612e56d8b4ebd32c6914288991e3a8a48265c38e6b6cb' // invalid hash
     }
   ]
 }
+
 var tmpDir = '/tmp/'
 
 describe('Install files', function () {
@@ -29,8 +30,9 @@ describe('Install files', function () {
     dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
-        if (file.valid) {
+        if ([0,1].indexOf(i) > -1) { // valid files
           assert.equal(file.hash, test_data.resources[i].hash)
+          assert(file.valid)
         } else {
           assert.notEqual(file.hash, test_data.resources[i].hash)
         }
@@ -43,7 +45,8 @@ describe('Install files', function () {
     dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
-        if (file.valid) {
+        if ([0,1].indexOf(i) > -1) { // valid files
+          assert(file.valid)
           assert.equal(file.hash, test_data.resources[i].hash)
           assert(file.cached)
         } else {
@@ -59,8 +62,8 @@ describe('Install files', function () {
 var test_dirs = {
   resources: [
     {
-      url: 'https://github.com/alanhoff/node-tar.gz/raw/master/test/fixtures/compressed.tar.gz',
-      hash: 'e47b1c61496925496f494a753ef50085dc8a9183763f78d52a451ec58fabdf2b'
+      url: 'https://github.com/empiricalci/fixtures/raw/master/my-files.tar.gz',
+      hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe'
     }
   ]
 }

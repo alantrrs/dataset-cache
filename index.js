@@ -47,8 +47,8 @@ function getFile (source, data_dir) {
       return validate(file_path, source.hash)
       // Rename using hash
       .then(function (newFile) {
-        debug('newFile path' + newFile.path)
         const new_path = path.join(data_dir, newFile.hash)
+        debug(`Rename: ${newFile.path} ${new_path}`)
         fs.renameSync(newFile.path, new_path)
         newFile.path = new_path
         return newFile
