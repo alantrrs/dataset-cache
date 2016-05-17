@@ -13,7 +13,7 @@ var test_data = {
     },
     {
       url: 'https://raw.githubusercontent.com/empiricalci/fixtures/master/another_file.txt',
-      hash: '986915f2caa2c8f9538f0b77832adc8abf3357681d4de5ee93a202ebf19bd8b8'
+      hash: '0f431dfe11d428f809edb32a31867be71e753f9203945676cbc77c514c7324bf'
     },
     {
       url: 'https://raw.githubusercontent.com/empiricalci/fixtures/another_file.txt',
