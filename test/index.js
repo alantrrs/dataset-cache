@@ -30,7 +30,7 @@ describe('Install files', function () {
     dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
-        if ([0,1].indexOf(i) > -1) { // valid files
+        if ([0, 1].indexOf(i) > -1) { // valid files
           assert.equal(file.hash, test_data.resources[i].hash)
           assert(file.valid)
         } else {
@@ -45,7 +45,7 @@ describe('Install files', function () {
     dataset.install(test_data, tmpDir).then(function (files) {
       files.forEach(function (file, i) {
         assert(fs.lstatSync(file.path).isFile())
-        if ([0,1].indexOf(i) > -1) { // valid files
+        if ([0, 1].indexOf(i) > -1) { // valid files
           assert(file.valid)
           assert.equal(file.hash, test_data.resources[i].hash)
           assert(file.cached)
