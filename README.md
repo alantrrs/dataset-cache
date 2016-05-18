@@ -13,8 +13,6 @@ Directories can be provided in the form of a tarball (``tar.gz``). After downloa
 the contents will be extracted and the directory will be hashed using [hash-then](https://github.com/alantrrs/hash-then).
 The contents then will be saved in a directory named using the hash.
 
-If a ``tar.gz`` needs to be downloaded as a file.
-**NOTE: NOT IMPLEMENTED YET**
 
 ## Use
 ### As a library
@@ -53,7 +51,11 @@ dataset.install({
 
 ```
 
-### As CLI
+## TODO [NOT IMPLEMENTED YET]
+- If a ``tar.gz`` needs to be downloaded as a file, you can do so by passing ``type: 'file'``
+in the resource object.
+
+### Use as CLI
 
 Download and cache a file
 ```
