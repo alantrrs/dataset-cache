@@ -1,4 +1,4 @@
-# Dataset Cache
+# Dataset Cache [![CircleCI](https://circleci.com/gh/empiricalci/dataset-cache.svg?style=svg)](https://circleci.com/gh/empiricalci/dataset-cache)
 _A solution for downloading and caching datasets_
 
 
