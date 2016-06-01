@@ -1,23 +1,26 @@
-npm:
-  image: node
-  entrypoint: npm
-  working_dir: /home/app
-  volumes:
-    - .:/home/app
-dataset:
-  image: node
-  entrypoint: node cli.js
-  working_dir: /home/app
-  environment:
-    - DEBUG=$DEBUG
-  volumes:
-    - .:/home/app
-    - /tmp:/tmp
-test:
-  image: node
-  entrypoint: npm test
-  working_dir: /home/app
-  environment:
-    - DEBUG=$DEBUG
-  volumes:
-    - .:/home/app
+version: '2'
+services:
+  npm:
+    image: node
+    entrypoint: npm
+    working_dir: /home/app
+    volumes:
+      - .:/home/app
+  dataset:
+    build: .
+    image: dataset-cache
+    entrypoint: node cli.js
+    working_dir: /home/app
+    environment:
+      - DEBUG=$DEBUG
+    volumes:
+      - .:/home/app
+      - /tmp:/tmp
+  test:
+    image: node
+    entrypoint: npm test
+    working_dir: /home/app
+    environment:
+      - DEBUG=$DEBUG
+    volumes:
+      - .:/home/app

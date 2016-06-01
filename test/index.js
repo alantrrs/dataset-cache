@@ -6,20 +6,20 @@ var fs = require('fs')
 var dataset = require('..')
 
 var test_data = {
-  resources: [
-    {
+  resources: {
+    'my-file.txt': {
       url: 'https://raw.githubusercontent.com/empiricalci/fixtures/master/my-file.txt',
       hash: '8b4781a921e9f1a1cb5aa3063ca8592cac3ee39276d8e8212b336b6e73999798'
     },
-    {
+    'another_file.txt': {
       url: 'https://raw.githubusercontent.com/empiricalci/fixtures/master/another_file.txt',
       hash: '0f431dfe11d428f809edb32a31867be71e753f9203945676cbc77c514c7324bf'
     },
-    {
+    'invalid_file': {
       url: 'https://raw.githubusercontent.com/empiricalci/fixtures/another_file.txt',
       hash: 'abcd6899095d366f25a612e56d8b4ebd32c6914288991e3a8a48265c38e6b6cb' // invalid hash
     }
-  ]
+  }
 }
 
 var tmpDir = '/tmp/'
@@ -28,13 +28,15 @@ describe('Install files', function () {
   it('should download and cache the files', function (done) {
     this.timeout(30000)
     dataset.install(test_data, tmpDir).then(function (files) {
-      files.forEach(function (file, i) {
+      var keys = Object.keys(files)
+      keys.forEach(function (k) {
+        var file = files[k]
         assert(fs.lstatSync(file.path).isFile())
-        if ([0, 1].indexOf(i) > -1) { // valid files
-          assert.equal(file.hash, test_data.resources[i].hash)
+        if (k !== 'invalid_file') { // valid files
+          assert.equal(file.hash, test_data.resources[k].hash)
           assert(file.valid)
         } else {
-          assert.notEqual(file.hash, test_data.resources[i].hash)
+          assert.notEqual(file.hash, test_data.resources[k].hash)
         }
       })
       done()
@@ -43,14 +45,16 @@ describe('Install files', function () {
   it('should have cached valid objects', function (done) {
     this.timeout(30000)
     dataset.install(test_data, tmpDir).then(function (files) {
-      files.forEach(function (file, i) {
+      var keys = Object.keys(files)
+      keys.forEach(function (k) {
+        var file = files[k]
         assert(fs.lstatSync(file.path).isFile())
-        if ([0, 1].indexOf(i) > -1) { // valid files
+        if (k !== 'invalid_file') { // valid files
           assert(file.valid)
-          assert.equal(file.hash, test_data.resources[i].hash)
+          assert.equal(file.hash, test_data.resources[k].hash)
           assert(file.cached)
         } else {
-          assert.notEqual(file.hash, test_data.resources[i].hash)
+          assert.notEqual(file.hash, test_data.resources[k].hash)
           assert.equal(file.cached, false)
         }
       })
@@ -60,35 +64,50 @@ describe('Install files', function () {
 })
 
 var test_dirs = {
-  resources: [
-    {
+  resources: {
+    'my-files': {
       url: 'https://github.com/empiricalci/fixtures/raw/master/my-files.tar.gz',
       hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe'
     }
-  ]
+  }
 }
 
 describe('Install tarballs', function () {
   it('should download and uncompress the file', function (done) {
     this.timeout(30000)
     dataset.install(test_dirs, tmpDir).then(function (dirs) {
-      dirs.forEach(function (dir, i) {
-        assert(fs.lstatSync(dir.path).isDirectory())
-        assert(dir.valid)
-        assert.equal(dir.hash, test_dirs.resources[i].hash)
-      })
+      var dir = dirs['my-files']
+      assert(fs.lstatSync(dir.path).isDirectory())
+      assert(dir.valid)
+      assert.equal(dir.hash, test_dirs.resources['my-files'].hash)
       done()
     }).catch(done)
   })
   it('should have cached valid objects', function (done) {
     this.timeout(30000)
     dataset.install(test_dirs, tmpDir).then(function (dirs) {
-      dirs.forEach(function (dir, i) {
-        assert(fs.lstatSync(dir.path).isDirectory())
-        assert(dir.valid)
-        assert.equal(dir.hash, test_dirs.resources[i].hash)
-        assert(dir.cached)
-      })
+      var dir = dirs['my-files']
+      assert(fs.lstatSync(dir.path).isDirectory())
+      assert(dir.valid)
+      assert.equal(dir.hash, test_dirs.resources['my-files'].hash)
+      assert(dir.cached)
+      done()
+    }).catch(done)
+  })
+})
+
+var test_zip = {
+  url: 'http://cvlab.hanyang.ac.kr/tracker_benchmark/seq/Diving.zip',
+  hash: '100458e3e903751de6604d0804973684eff7d59e3cb529af1ab411d5ce8458ec'
+}
+
+describe('Get directory from zip', function () {
+  it('should download and uncompress the file', function (done) {
+    this.timeout(80000)
+    dataset.get(test_zip, '/tmp/').then(function (dir) {
+      assert(fs.lstatSync(dir.path).isDirectory())
+      assert(dir.valid)
+      assert.equal(dir.hash, test_zip.hash)
       done()
     }).catch(done)
   })
