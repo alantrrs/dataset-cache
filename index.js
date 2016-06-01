@@ -74,7 +74,7 @@ function doUnzip (compressed_file, uncompressed_dir) {
   })
 }
 
-function uncompress(compressed_file, uncompressed_dir) {
+function uncompress (compressed_file, uncompressed_dir) {
   if (/.zip$/.test(compressed_file)) {
     return doUnzip(compressed_file, uncompressed_dir)
   } else {
