@@ -4,6 +4,7 @@ var shortid = require('shortid')
 var path = require('path')
 var tar = require('tar-fs')
 var gz = require('gunzip-maybe')
+var decompress = require('decompress')
 var debug = require('debug')('dataset-cache')
 var hash = require('hash-then')
 
@@ -11,7 +12,7 @@ function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
     debug('downloading ' + source)
     return fetch(source).then(function (response) {
-      var outputPath = path.join(data_dir, source.split('/').pop() + shortid.generate() + '.tmp')
+      var outputPath = path.join(data_dir, `tmp-${shortid.generate()}-${source.split('/').pop()}`)
       var out = fs.createWriteStream(outputPath)
       response.body.pipe(out).on('finish', function () {
         resolve(outputPath)
@@ -57,7 +58,7 @@ function getFile (source, data_dir) {
   })
 }
 
-function uncompress (compressed_file, uncompressed_dir) {
+function untar (compressed_file, uncompressed_dir) {
   return new Promise(function (resolve, reject) {
     fs.createReadStream(compressed_file)
     .pipe(gz())
@@ -65,6 +66,20 @@ function uncompress (compressed_file, uncompressed_dir) {
       resolve(uncompressed_dir)
     }).on('error', reject)
   })
+}
+
+function doUnzip (compressed_file, uncompressed_dir) {
+  return decompress(compressed_file, uncompressed_dir).then(function (files) {
+    return uncompressed_dir
+  })
+}
+
+function uncompress(compressed_file, uncompressed_dir) {
+  if (/.zip$/.test(compressed_file)) {
+    return doUnzip(compressed_file, uncompressed_dir)
+  } else {
+    return untar(compressed_file, uncompressed_dir)
+  }
 }
 
 function getDir (source, data_dir) {
@@ -103,7 +118,7 @@ function getDir (source, data_dir) {
 }
 
 function get (source, data_dir) {
-  if (source.url.indexOf('.tar.gz') === -1) return getFile(source, data_dir)
+  if (!/\.(tar.gz|zip)$/.test(source.url)) return getFile(source, data_dir)
   return getDir(source, data_dir)
 }
 
@@ -114,9 +129,15 @@ function get (source, data_dir) {
  */
 function install (config, out_dir) {
   if (!out_dir) return Promise.reject('No output directory provided')
-  return Promise.all(config.resources.map(function (resource) {
-    return get(resource, out_dir)
-  }))
+  var keys = Object.keys(config.resources)
+  return Promise.all(keys.map(function (key) {
+    return get(config.resources[key], out_dir)
+  })).then(function (resources) {
+    return resources.reduce(function (result, item, i) {
+      result[keys[i]] = item
+      return result
+    }, {})
+  })
 }
 
 exports.get = get
