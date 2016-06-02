@@ -7,13 +7,19 @@ var gz = require('gunzip-maybe')
 var decompress = require('decompress')
 var debug = require('debug')('dataset-cache')
 var hash = require('hash-then')
+var ProgressBar = require('progress')
 
 function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
     debug('downloading ' + source)
     return fetch(source).then(function (response) {
+      var len = parseInt(response.headers.get('content-length'), 10)
+      var bar = new ProgressBar('[:bar] :percent', {total: len, width: 100})
       var outputPath = path.join(data_dir, `tmp-${shortid.generate()}-${source.split('/').pop()}`)
       var out = fs.createWriteStream(outputPath)
+      response.body.on('data', function (chunk) {
+        bar.tick(chunk.length)
+      })
       response.body.pipe(out).on('finish', function () {
         resolve(outputPath)
       }).on('error', reject)

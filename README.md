@@ -1,9 +1,8 @@
 # Dataset Cache [![CircleCI](https://circleci.com/gh/empiricalci/dataset-cache.svg?style=svg)](https://circleci.com/gh/empiricalci/dataset-cache)
 _A solution for downloading and caching datasets_
 
-
 ## How does it work?
-Dataset.js allows you to download your datasets, cache them and 
+**dataset-cache** allows you to download your datasets, cache them and 
 guarantee that the data you're using is the correct one.
 
 When a file is downloaded it will be saved to the output directory, 

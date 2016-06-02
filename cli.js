@@ -6,6 +6,10 @@ var dataset = require('.')
 
 function execute (command) {
   switch (command) {
+    case 'install':
+      return dataset.install(require(process.argv[3]), process.argv[4]).then(function (data) {
+        console.log(data)
+      })
     case 'extract':
       return dataset.extract(process.argv[3], process.argv[4]).then(function (data) {
         console.log(data)
