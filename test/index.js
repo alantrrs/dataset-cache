@@ -137,3 +137,12 @@ describe('Get a file without a hash', function () {
     }).catch(done)
   })
 })
+
+describe('Get a file without a hash', function () {
+  it('should download the file without validating it', function (done) {
+    dataset.get(test_data.resources['my-file.txt'], '/tmp/').then(function (file) {
+      assert(fs.lstatSync(file.path).isFile())
+      assert.notEqual(file.valid, true)
+    })
+  })
+})
