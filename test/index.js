@@ -139,10 +139,18 @@ describe('Get a file without a hash', function () {
 })
 
 describe('Get a file without a hash', function () {
-  it('should download the file without validating it', function (done) {
-    dataset.get(test_data.resources['my-file.txt'], '/tmp/').then(function (file) {
+  it('should download a file without validating it', function (done) {
+    dataset.get(no_hash, '/tmp/').then(function (file) {
       assert(fs.lstatSync(file.path).isFile())
       assert.notEqual(file.valid, true)
-    })
+      done()
+    }).catch(done)
+  })
+  it('should download and uncompress a .zip without validating it', function (done) {
+    dataset.get(no_hash_dir, '/tmp/').then(function (dir) {
+      assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
+      assert.notEqual(dir.valid, true, 'Directory is valid')
+      done()
+    }).catch(done)
   })
 })
