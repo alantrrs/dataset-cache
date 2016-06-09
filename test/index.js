@@ -97,8 +97,8 @@ describe('Install tarballs', function () {
 })
 
 var test_zip = {
-  url: 'http://cvlab.hanyang.ac.kr/tracker_benchmark/seq/Diving.zip',
-  hash: '100458e3e903751de6604d0804973684eff7d59e3cb529af1ab411d5ce8458ec'
+  url: 'https://github.com/empiricalci/fixtures/archive/master.zip',
+  hash: 'f90af944289bd305d71ef1da68b97f9d4462e91cfcde9c5f03ebfc7c8c4d6807'
 }
 
 describe('Get directory from zip', function () {
@@ -108,6 +108,31 @@ describe('Get directory from zip', function () {
       assert(fs.lstatSync(dir.path).isDirectory())
       assert(dir.valid)
       assert.equal(dir.hash, test_zip.hash)
+      done()
+    }).catch(done)
+  })
+})
+
+var no_hash = {
+  url: 'https://raw.githubusercontent.com/empiricalci/fixtures/data.csv'
+}
+
+var no_hash_dir = {
+  url: 'https://github.com/empiricalci/fixtures/archive/master.zip'
+}
+
+describe('Get a file without a hash', function () {
+  it('should download a file without validating it', function (done) {
+    dataset.get(no_hash, '/tmp/').then(function (file) {
+      assert(fs.lstatSync(file.path).isFile())
+      assert.notEqual(file.valid, true)
+      done()
+    }).catch(done)
+  })
+  it('should download and uncompress a .zip without validating it', function (done) {
+    dataset.get(no_hash_dir, '/tmp/').then(function (dir) {
+      assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
+      assert.notEqual(dir.valid, true, 'Directory is valid')
       done()
     }).catch(done)
   })

@@ -8,12 +8,14 @@ var decompress = require('decompress')
 var debug = require('debug')('dataset-cache')
 var hash = require('hash-then')
 var ProgressBar = require('progress')
+var rimraf = require('rimraf')
 
 function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
     debug('downloading ' + source)
     return fetch(source).then(function (response) {
       var len = parseInt(response.headers.get('content-length'), 10)
+      debug('content-lenght: %s', len)
       var bar = new ProgressBar('[:bar] :percent', {total: len, width: 100})
       var outputPath = path.join(data_dir, `tmp-${shortid.generate()}-${source.split('/').pop()}`)
       var out = fs.createWriteStream(outputPath)
@@ -28,6 +30,7 @@ function download (source, data_dir) {
 }
 
 function validate (object_path, source_hash) {
+  if (!object_path) return Promise.resolve({valid: false})
   return hash(object_path).then(function (hash) {
     return {
       path: object_path,
@@ -40,7 +43,7 @@ function validate (object_path, source_hash) {
 
 function getFile (source, data_dir) {
   // Check if the data exists and is valid
-  const cache_path = path.join(data_dir, source.hash)
+  const cache_path = source.hash ? path.join(data_dir, source.hash) : null
   return validate(cache_path, source.hash).then(function (data) {
     debug('Chached data valid: ' + data.valid)
     if (data.valid) {
@@ -92,7 +95,7 @@ function getDir (source, data_dir) {
   debug(`[SOURCE url]: ${source.url}`)
   debug(`[SOURCE hash]: ${source.hash}`)
   // Check if data exist and is valid
-  const cache_path = path.join(data_dir, source.hash)
+  const cache_path = source.hash ? path.join(data_dir, source.hash) : null
   debug('Cached path: ' + cache_path)
   return validate(cache_path, source.hash).then(function (data) {
     debug('Chached hash: ' + data.hash)
@@ -114,6 +117,7 @@ function getDir (source, data_dir) {
         // Rename directory using hash
         debug('New directory path' + data.path)
         const new_path = path.join(data_dir, data.hash)
+        rimraf.sync(new_path)
         fs.renameSync(data.path, new_path)
         data.path = new_path
         debug('data path:', data.path)
