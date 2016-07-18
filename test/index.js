@@ -97,17 +97,17 @@ describe('Install tarballs', function () {
 })
 
 var test_zip = {
-  url: 'https://github.com/empiricalci/fixtures/archive/master.zip',
-  hash: 'f90af944289bd305d71ef1da68b97f9d4462e91cfcde9c5f03ebfc7c8c4d6807'
+  url: 'https://github.com/empiricalci/fixtures/raw/master/fixtures-0.1.zip',
+  hash: '5c9c3ff715bac9faa626f6e0e1da60c976c279c94d931388c6aaaf38456957d8'
 }
 
 describe('Get directory from zip', function () {
   it('should download and uncompress the file', function (done) {
     this.timeout(80000)
     dataset.get(test_zip, '/tmp/').then(function (dir) {
-      assert(fs.lstatSync(dir.path).isDirectory())
-      assert(dir.valid)
+      assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not  a directory')
       assert.equal(dir.hash, test_zip.hash)
+      assert(dir.valid, 'Checksum is not valid')
       done()
     }).catch(done)
   })
