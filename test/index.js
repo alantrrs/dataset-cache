@@ -124,6 +124,11 @@ var no_hash_dir = {
   directory: true
 }
 
+var url_with_query = {
+  url: 'https://www.dropbox.com/s/mgh53u1ispmpfub/fixtures-0.1.zip?dl=1',
+  directory: true
+}
+
 describe('Get a file without a hash', function () {
   it('should download a file without validating it', function (done) {
     dataset.get(no_hash, '/tmp/').then(function (file) {
@@ -134,6 +139,13 @@ describe('Get a file without a hash', function () {
   })
   it('should download and uncompress a .zip without validating it', function (done) {
     dataset.get(no_hash_dir, '/tmp/').then(function (dir) {
+      assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
+      assert.notEqual(dir.valid, true, 'Directory is valid')
+      done()
+    }).catch(done)
+  })
+  it('should download and uncompress a .zip from a url with query params', function (done) {
+    dataset.get(url_with_query, '/tmp/').then(function (dir) {
       assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
       assert.notEqual(dir.valid, true, 'Directory is valid')
       done()

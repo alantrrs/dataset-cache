@@ -9,6 +9,7 @@ var debug = require('debug')('dataset-cache')
 var hash = require('hash-then')
 var ProgressBar = require('progress')
 var rimraf = require('rimraf')
+var url = require('url')
 
 function download (source, data_dir) {
   return new Promise(function (resolve, reject) {
@@ -17,7 +18,7 @@ function download (source, data_dir) {
       var len = parseInt(response.headers.get('content-length'), 10)
       debug('content-lenght: %s', len)
       var bar = new ProgressBar('[:bar] :percent', {total: len, width: 100})
-      var outputPath = path.join(data_dir, `tmp-${shortid.generate()}-${source.split('/').pop()}`)
+      var outputPath = path.join(data_dir, `tmp-${shortid.generate()}-${url.parse(source).pathname.split('/').pop()}`)
       var out = fs.createWriteStream(outputPath)
       response.body.on('data', function (chunk) {
         bar.tick(chunk.length)
