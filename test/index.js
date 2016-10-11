@@ -67,7 +67,8 @@ var test_dirs = {
   resources: {
     'my-files': {
       url: 'https://github.com/empiricalci/fixtures/raw/master/my-files.tar.gz',
-      hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe'
+      hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe',
+      directory: true
     }
   }
 }
@@ -98,7 +99,8 @@ describe('Install tarballs', function () {
 
 var test_zip = {
   url: 'https://github.com/empiricalci/fixtures/raw/master/fixtures-0.1.zip',
-  hash: '5c9c3ff715bac9faa626f6e0e1da60c976c279c94d931388c6aaaf38456957d8'
+  hash: '5c9c3ff715bac9faa626f6e0e1da60c976c279c94d931388c6aaaf38456957d8',
+  directory: true
 }
 
 describe('Get directory from zip', function () {
@@ -118,7 +120,8 @@ var no_hash = {
 }
 
 var no_hash_dir = {
-  url: 'https://github.com/empiricalci/fixtures/archive/master.zip'
+  url: 'https://github.com/empiricalci/fixtures/archive/master.zip',
+  directory: true
 }
 
 describe('Get a file without a hash', function () {

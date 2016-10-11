@@ -128,7 +128,7 @@ function getDir (source, data_dir) {
 }
 
 function get (source, data_dir) {
-  if (!/\.(tar.gz|zip)$/.test(source.url)) return getFile(source, data_dir)
+  if (!source.directory) return getFile(source, data_dir)
   return getDir(source, data_dir)
 }
 

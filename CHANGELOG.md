@@ -1,4 +1,7 @@
 # Changelog
+## v2.0.0 (11 Oct 2016)
+- **Breaking**: ``.zip`` and ``.tar.gz`` are no longer automatically extracted.
+In order to extract directories you now need to pass ``directory: true``.
 
 ## v1.2.0 (17 Jul 2016)
 - Upgrade hash-then to v1.1.0 which adds functionality to persist the tar
