@@ -2,6 +2,7 @@
 
 var assert = require('assert')
 var fs = require('fs')
+var os = require('os')
 
 var dataset = require('..')
 
@@ -22,7 +23,7 @@ var test_data = {
   }
 }
 
-var tmpDir = '/tmp/'
+var tmpDir = os.tmpdir()
 
 describe('Install files', function () {
   it('should download and cache the files', function (done) {
@@ -106,7 +107,7 @@ var test_zip = {
 describe('Get directory from zip', function () {
   it('should download and uncompress the file', function (done) {
     this.timeout(80000)
-    dataset.get(test_zip, '/tmp/').then(function (dir) {
+    dataset.get(test_zip, tmpDir).then(function (dir) {
       assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not  a directory')
       assert.equal(dir.hash, test_zip.hash)
       assert(dir.valid, 'Checksum is not valid')
@@ -131,21 +132,21 @@ var url_with_query = {
 
 describe('Get a file without a hash', function () {
   it('should download a file without validating it', function (done) {
-    dataset.get(no_hash, '/tmp/').then(function (file) {
+    dataset.get(no_hash, tmpDir).then(function (file) {
       assert(fs.lstatSync(file.path).isFile())
       assert.notEqual(file.valid, true)
       done()
     }).catch(done)
   })
   it('should download and uncompress a .zip without validating it', function (done) {
-    dataset.get(no_hash_dir, '/tmp/').then(function (dir) {
+    dataset.get(no_hash_dir, tmpDir).then(function (dir) {
       assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
       assert.notEqual(dir.valid, true, 'Directory is valid')
       done()
     }).catch(done)
   })
   it('should download and uncompress a .zip from a url with query params', function (done) {
-    dataset.get(url_with_query, '/tmp/').then(function (dir) {
+    dataset.get(url_with_query, tmpDir).then(function (dir) {
       assert(fs.lstatSync(dir.path).isDirectory(), 'Path is not a directory')
       assert.notEqual(dir.valid, true, 'Directory is valid')
       done()
