@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.2 (12 Oct 2016)
+- Upgrade hash-then to v1.1.1:
+Fixes windows checksum missmatch for directories
+
 ## v2.0.1 (11 Oct 2016)
 - Fix url parsing when downloading files from URLs with query params
 
