@@ -1,4 +1,6 @@
 # Changelog
+## v3.0.0 (15 Feb 2017)
+- Change config schema: Stop nesting datasets under 'resources'
 
 ## v2.0.2 (12 Oct 2016)
 - Upgrade hash-then to v1.1.1:
