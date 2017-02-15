@@ -27,60 +27,25 @@ dataset.get({
 ```
 
 Donwload and cache a directory
+If ``directory: true`` the library will extract the ``.zip`` or ``.tar.gz``
 ```js
 dataset.get({
   url: 'https://github.com/empiricalci/fixtures/raw/master/my-files.tar.gz',
-  hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe'
+  hash: '0e4710c220e7ed2d11288bcf3cf111ac01bdd0cb2a4d64f81455c5b31f1a4fbe',
+  directory: true
 }, output_dir).then(function (data) {
   console.log(data) // {path: '..', hash: '..', valid: '..', cached: '..'} 
 })
 
 ```
 
-Install multiple resources at once
+Install multiple datasets at once
 ```js
 dataset.install({
-  resources: [
-    {url: '..', hash: '..'},
-    {url: '..', hash: '..'}
-  ]
-}, function (resources) {
-  console.log(resources)
+  resource1: {url: '..', hash: '..'},
+  dataset2: {url: '..', hash: '..'}
+}, function (datasets) {
+  console.log(datasets)
 })
 
 ```
-
-## TODO [NOT IMPLEMENTED YET]
-- If a ``tar.gz`` needs to be downloaded as a file, you can do so by passing ``type: 'file'``
-in the resource object.
-
-### Use as CLI
-
-Download and cache a file
-```
-$ dataset get http://example.com/my-file.txt -o /my_data
-> downloading..
-> 232352523523 /my_data/24234234235235
-```
-
-Download and cache a directory.
-```
-$ dataset get http://example.com/my-file.tgz -o /my_data
-> downloading..
-> uncompressing..
-> 232352523523 /my_data/24234234235235
-```
-
-Get checksum of a file
-```
-$ dataset hash /path/to/my-file.txt
-> 2343rksdgsdgsdgsdg334  /path/to/my-file.txt
-```
-
-Get checksum of directory
-```
-$ dataset pack /my-directory
-> 32424234234234242423432   /my-directory
-```
-
-

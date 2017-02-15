@@ -140,9 +140,9 @@ function get (source, data_dir) {
  */
 function install (config, out_dir) {
   if (!out_dir) return Promise.reject('No output directory provided')
-  var keys = Object.keys(config.resources)
+  var keys = Object.keys(config)
   return Promise.all(keys.map(function (key) {
-    return get(config.resources[key], out_dir)
+    return get(config[key], out_dir)
   })).then(function (resources) {
     return resources.reduce(function (result, item, i) {
       result[keys[i]] = item
